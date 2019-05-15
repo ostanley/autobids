@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BIDS_DIR=$AUTOBIDS_DATA/Menon/VisualManganese/bids
+BIDS_DIR=$AUTOBIDS_DATA/Menon/NHP_RestingState/bids
 SUBJ_EXPR=*_[nN][hH][pP]_{subject}_*  #search string in patient_name
 
 #HEURISTIC=$AUTOBIDS_STUDY_CFG_DIR/../heuristics/manganese_heuristic.py
