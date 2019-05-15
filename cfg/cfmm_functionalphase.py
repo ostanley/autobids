@@ -81,4 +81,6 @@ def infotodict(seqinfo):
             phaseinfo[phaseind[i]]['run']=str(i+1).zfill(2)
             info[task_ge_phase].append(phaseinfo[phaseind[i]])
 
+    print(info)
+
     return info
