@@ -40,13 +40,13 @@ def infotodict(seqinfo):
 
         if ('bold' in (s.series_description).strip()):
             if s.dim4==1 and 'SBRef' in (s.series_description).strip() and 'M' == s.image_type[2].strip():
-                info[task_sbref].append({'item': s.series_id})
+                info[task_sbref].append({'item': s.series_id, 'task':'rest'})
             elif (s.dim4>1):
                 if 'M' == s.image_type[2].strip():
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge].append({'item': s.series_id, 'acqtime': acquisition_time, 'task': 'rest'})
                     magacq.append(float(acquisition_time))
-                elif 'P' == (s.image_type[2].strip():
+                elif 'P' == s.image_type[2].strip():
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge_phase].append({'item': s.series_id, 'acqtime': acquisition_time,  'task': 'rest'})
                     phaseacq.append(float(acquisition_time))
@@ -68,7 +68,7 @@ def infotodict(seqinfo):
     # find the pairs of indicies corresponding to the same run
     magind =[None]*len(magtimes)
     phaseind =[None]*len(magtimes)
-    for i in xrange(len(magtimes)):
+    for i in range(len(magtimes)):
         #find last phase file with that acq time (vunerable: assumes last phase recon is correct recon)
         magind[i]=magacq.index(magtimes[i])
         try:
@@ -81,7 +81,7 @@ def infotodict(seqinfo):
     info[task_ge]=[]
     info[task_ge_phase]=[]
 
-    for i in xrange(len(magind)):
+    for i in range(len(magind)):
         info[task_ge].append(maginfo[magind[i]])
         info[task_ge][i]['run']=str(i+1).zfill(2)
         if phaseind[i]>-1: # if no run found phase is not appended
