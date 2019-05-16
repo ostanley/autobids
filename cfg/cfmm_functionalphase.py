@@ -42,16 +42,18 @@ def infotodict(seqinfo):
             if s.dim4==1 and 'SBRef' in (s.series_description).strip() and 'M' == s.image_type[2].strip():
                 info[task_sbref].append({'item': s.series_id, 'task':'rest'})
             elif (s.dim4>1):
-                if 'M' == s.image_type[2].strip():                    
-                    acquisition_time=s.series_uid.split('.')[-4][8:14]
+                if 'M' == s.image_type[2].strip():
+                    timestr=s.series_uid.split('.')[-4][8:14]
+                    acquisition_time=(int(timestr[0:2])*60+int(timestr[2:4]))*60+int(timestr[4:])
                     info[task_ge].append({'item': s.series_id, 'acqtime': acquisition_time, 'task': 'rest'})
-                    magacq.append(float(acquisition_time))
-                    print(idx, 'is magnitude bold', acquisition_time)
+                    magacq.append(acquisition_time)
+                    print(idx, 'is magnitude bold')
                 elif 'P' == s.image_type[2].strip():
                     print(idx, 'is phase bold')
-                    acquisition_time=s.series_uid.split('.')[-4][8:14]
+                    timestr=s.series_uid.split('.')[-4][8:14]
+                    acquisition_time=(int(timestr[0:2])*60+int(timestr[2:4]))*60+int(timestr[4:])
                     info[task_ge_phase].append({'item': s.series_id, 'acqtime': acquisition_time,  'task': 'rest'})
-                    phaseacq.append(float(acquisition_time))
+                    phaseacq.append(acquisition_time)
 
         if ('field_mapping' in s.protocol_name):
             if (s.dim4==1 and 'gre_field_mapping' in (s.series_description).strip()):
