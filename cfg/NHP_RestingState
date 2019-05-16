@@ -4,7 +4,7 @@ BIDS_DIR=$AUTOBIDS_DATA/Menon/NHP_RestingState/bids
 SUBJ_EXPR=*_[nN][hH][pP]_{subject}  #search string in patient_name
 
 #HEURISTIC=$AUTOBIDS_STUDY_CFG_DIR/../heuristics/manganese_heuristic.py
-HEURISTIC=../cfg/cfmm_functionalphase.py
+HEURISTIC=/home/ostanle2/autobids/cfg/cfmm_functionalphase.py
 
 # POST_BIDS_PIPELINE=$AUTOBIDS_DIR/pipelines/correct7T.v0.3
 
