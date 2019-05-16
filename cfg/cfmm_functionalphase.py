@@ -43,11 +43,11 @@ def infotodict(seqinfo):
                 info[task_sbref].append({'item': s.series_id, 'task':'rest'})
             elif (s.dim4>1):
                 if 'M' == s.image_type[2].strip():
+                    print(idx, 'is magnitude bold')
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge].append({'item': s.series_id, 'acqtime': acquisition_time, 'task': 'rest'})
                     magacq.append(float(acquisition_time))
-                    print(idx, 'is magnitude bold', acquisition_time)
-                elif 'P' == (s.image_type[2].strip():
+                elif 'P' == s.image_type[2].strip():
                     print(idx, 'is phase bold')
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge_phase].append({'item': s.series_id, 'acqtime': acquisition_time,  'task': 'rest'})
@@ -65,13 +65,12 @@ def infotodict(seqinfo):
 
     # Now we have all the sequences in the right bins we need to link up the magnitudes and phases from the GE to ensure the runs match
     # find the unique magnitude runs and sort by start times
-    print(magacq)
     magtimes = list(sorted(set(magacq)))
 
     # find the pairs of indicies corresponding to the same run
     magind =[None]*len(magtimes)
     phaseind =[None]*len(magtimes)
-    for i in xrange(len(magtimes)):
+    for i in range(len(magtimes)):
         #find last phase file with that acq time (vunerable: assumes last phase recon is correct recon)
         magind[i]=magacq.index(magtimes[i])
         try:
@@ -89,7 +88,7 @@ def infotodict(seqinfo):
     info[task_ge]=[]
     info[task_ge_phase]=[]
 
-    for i in xrange(len(magind)):
+    for i in range(len(magind)):
         info[task_ge].append(maginfo[magind[i]])
         info[task_ge][i]['run']=str(i+1).zfill(2)
         if phaseind[i]>-1: # if no run found phase is not appended
