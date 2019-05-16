@@ -15,7 +15,8 @@ def infotodict(seqinfo):
     # call cfmm for general labelling and get dictionary
     info = cfmminfodict(seqinfo)
 
-    task = create_key('{bids_subject_session_dir}/func/{bids_subject_session_prefix}_task-{task}_run-{item:02d}_bold')
+    task_ge = create_key('{bids_subject_session_dir}/func/{bids_subject_session_prefix}_task-{task}_part-mag_run-{item:02d}_bold')
+    task_ge_phase = create_key('{bids_subject_session_dir}/func/{bids_subject_session_prefix}_task-{task}_part-phase_run-{item:02d}_bold')
     task_sbref = create_key('{bids_subject_session_dir}/func/{bids_subject_session_prefix}_task-{task}_run-{item:02d}_sbref')
 
     gre_diff = create_key('{bids_subject_session_dir}/fmap/{bids_subject_session_prefix}_run-{item:02d}_phasediff')
@@ -26,23 +27,29 @@ def infotodict(seqinfo):
     del info[fmap_diff]
     del info[fmap_magnitude]
 
-    info[task]=[]
+    info[task_ge]=[]
+    info[task_ge_phase]=[]
     info[task_sbref]=[]
     info[gre_diff]=[]
     info[gre_magnitude]=[]
 
+    magacq=[]
+    phaseacq=[]
+
     for idx, s in enumerate(seqinfo):
 
         if ('bold' in (s.series_description).strip()):
-            if (s.dim4==1 and 'SBRef' in (s.series_description).strip() and ('M' == (s.image_type[2].strip()))):
+            if s.dim4==1 and 'SBRef' in (s.series_description).strip() and 'M' == s.image_type[2].strip():
                 info[task_sbref].append({'item': s.series_id})
             elif (s.dim4>1):
-                if (('M' == (s.image_type[2].strip())):
-                    info[task_ge].append({'item': s.series_id, 'acqtime': s.acquisition_time, 'task': 'rest'})
-                    magacq.append(float(s.acquisition_time))
-                elif (('P' == (s.image_type[2].strip())):
-                    info[task_ge_phase].append({'item': s.series_id, 'acqtime': s.acquisition_time,  'task': 'rest'})
-                    phaseacq.append(float(s.acquisition_time))
+                if 'M' == s.image_type[2].strip():
+                    acquisition_time=s.series_uid.split('.')[-4][8:14]
+                    info[task_ge].append({'item': s.series_id, 'acqtime': acquisition_time, 'task': 'rest'})
+                    magacq.append(float(acquisition_time))
+                elif 'P' == (s.image_type[2].strip():
+                    acquisition_time=s.series_uid.split('.')[-4][8:14]
+                    info[task_ge_phase].append({'item': s.series_id, 'acqtime': acquisition_time,  'task': 'rest'})
+                    phaseacq.append(float(acquisition_time))
 
         if ('field_mapping' in s.protocol_name):
             if (s.dim4==1 and 'gre_field_mapping' in (s.series_description).strip()):
