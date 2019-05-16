@@ -80,6 +80,11 @@ def infotodict(seqinfo):
     # put the results sorted back into info
     maginfo = info[task_ge]
     phaseinfo = info[task_ge_phase]
+
+    print(maginfo)
+    print(phaseinfo)
+    print(magind, phaseind)
+
     info[task_ge]=[]
     info[task_ge_phase]=[]
 
@@ -89,5 +94,8 @@ def infotodict(seqinfo):
         if phaseind[i]>-1: # if no run found phase is not appended
             phaseinfo[phaseind[i]]['run']=str(i+1).zfill(2)
             info[task_ge_phase].append(phaseinfo[phaseind[i]])
+
+    print(info[task_ge])
+    print(info[task_ge_phase])
 
     return info
