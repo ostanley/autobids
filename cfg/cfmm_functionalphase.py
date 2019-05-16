@@ -37,16 +37,18 @@ def infotodict(seqinfo):
     phaseacq=[]
 
     for idx, s in enumerate(seqinfo):
-
+        print(idx, s.series_description, s.image_type)
         if ('bold' in (s.series_description).strip()):
             if s.dim4==1 and 'SBRef' in (s.series_description).strip() and 'M' == s.image_type[2].strip():
-                info[task_sbref].append({'item': s.series_id})
+                info[task_sbref].append({'item': s.series_id, 'task':'rest'})
             elif (s.dim4>1):
                 if 'M' == s.image_type[2].strip():
+                    print(idx, 'is magnitude bold')
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge].append({'item': s.series_id, 'acqtime': acquisition_time, 'task': 'rest'})
                     magacq.append(float(acquisition_time))
                 elif 'P' == (s.image_type[2].strip():
+                    print(idx, 'is phase bold')
                     acquisition_time=s.series_uid.split('.')[-4][8:14]
                     info[task_ge_phase].append({'item': s.series_id, 'acqtime': acquisition_time,  'task': 'rest'})
                     phaseacq.append(float(acquisition_time))
@@ -87,7 +89,5 @@ def infotodict(seqinfo):
         if phaseind[i]>-1: # if no run found phase is not appended
             phaseinfo[phaseind[i]]['run']=str(i+1).zfill(2)
             info[task_ge_phase].append(phaseinfo[phaseind[i]])
-
-    print(info)
 
     return info
