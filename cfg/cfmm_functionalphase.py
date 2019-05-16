@@ -62,9 +62,6 @@ def infotodict(seqinfo):
                 if('M' in (s.image_type[2].strip()) ):
                     info[gre_magnitude].append({'item': s.series_id})
 
-    magacq=[]
-    phaseacq=[]
-
     # Now we have all the sequences in the right bins we need to link up the magnitudes and phases from the GE to ensure the runs match
     # find the unique magnitude runs and sort by start times
     print(magacq)
